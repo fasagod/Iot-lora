@@ -52,7 +52,7 @@ function saveDevice() {
     myDevice.delayRx1 = parseInt(form.elements["delayRx1"].value,2);
     myDevice.drRx2 = parseInt(form.elements["drRx2"].value,2);
     myDevice.preferDr = parseInt(form.elements["preferDr"].value,2);
-    myDevice.preferPower = parseInt(form.elements["preferPower"].value,2);
+    myDevice.preferPower = parseFloat(form.elements["preferPower"].value);
     myDevice.serverAdrEnable = form.elements["serverAdrEnable"].value;
     // myDevice.valid_data();
     var jsonMess =
