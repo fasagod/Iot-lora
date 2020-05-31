@@ -1,6 +1,6 @@
 var webSocket = new WebSocket("ws://192.168.100.120:8002");
 
-function authU() {
+ function authU() {
     var auth = {
         login: 'root',
         password: '123',
@@ -13,7 +13,7 @@ function authU() {
         webSocket.send(JSON.stringify(auth))
     }
 
-}
+} 
 
 
 function saveDevice() {
@@ -54,8 +54,9 @@ function saveDevice() {
         cmd: "manage_devices_req",
         devices_list: [myDevice]
     };
+    // console.log(JSON.stringify(jsonMess));
     webSocket.send(JSON.stringify(jsonMess));
 }
-webSocket.onmessage = function (event) {
+ webSocket.onmessage = function (event) {
     console.log(event.data);
-}
+} 

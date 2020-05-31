@@ -11,8 +11,7 @@ class device
         };
         this.OTAA = {
             appEui:undefined,
-            appKey:undefined,
-            last_join_ts:0
+            appKey:undefined
         };
         this.frequencyPlan = {
             freq4:864100000,
@@ -45,14 +44,14 @@ class device
             altitude:0
         };
         this.class='CLASS_A';
-        this.rxWindow;
-        this.delayRx1= 1;
-        this.delayJoin1= 5;
-        this.drRx2= 0;
+        this.rxWindow=1;
+        this.delayRx1=1;
+        this.delayJoin1=5;
+        this.drRx2=0;
         this.freqRx2=869100000;
         this.adr;
-        this.preferDr= 5;
-        this.preferPower= 14;
+        this.preferDr=5;
+        this.preferPower=14;
         this.fcnt_up;
         this.fcnt_down;
         this.last_data_ts;
