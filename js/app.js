@@ -1,4 +1,21 @@
-webSocket = new WebSocket("ws://192.168.100.120:8002");
+var webSocket = new WebSocket("ws://192.168.100.120:8002");
+
+function authU() {
+    var auth = {
+        login: 'root',
+        password: '123',
+        cmd: 'auth_req'
+    };
+    if (!webSocket.readyState) {
+        setTimeout(n => (webSocket.send(JSON.stringify(auth))), 10);
+    }
+    else {
+        webSocket.send(JSON.stringify(auth))
+    }
+
+}
+
+
 function saveDevice() {
     var form = document.getElementById("deviceForm");
     var myDevice = new device();

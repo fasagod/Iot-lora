@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Добавление датчика</title>
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css"> -->
+  <!-- <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script> -->
+  <link rel="stylesheet" type="text/css" href="css/bulma.css">
+  <script src="js/manageDevice.js"></script>
+  <script src="js/app.js"></script>
+  <script lang="javaScript">
+    /*  function saveDevice (){
+     var form = document.getElementById("deviceForm");
+     var myDevice = new device();
+         myDevice.devEui = form.elements["devEui"].value;
+         myDevice.devName = form.elements["devName"].value;
+         myDevice.ABP =
+         {
+           devAddess: form.elements["devAddress"].value,
+           appsKey: form.elements["appsKey"].value,
+           nwksKey: form.elements["nwksKey"].value
+         };
+         myDevice.OTAA=
+         {
+           appEui: form.elements["appEui"].value,
+           appKey: form.elements["appKey"].value
+         };
+         myDevice.position=
+         {
+           longitude:form.elements["longitude"].value,
+           latitude:form.elements["latitude"].value,
+           altitude:form.elements["altitude"].value
+         };
+         myDevice.rxWindow= form.elements["rxWindow"].value;
+         myDevice.delayRx1= form.elements["delayRx1"].value;
+         myDevice.drRx2= form.elements["drRx2"].value;
+         myDevice.preferDr= form.elements["preferDr"].value;
+         myDevice.preferPower= form.elements["preferPower"].value;
+         myDevice.serverAdrEnable= form.elements["serverAdrEnable"].value;
+         myDevice.valid_data();
+     var json =
+     {
+     cmd : "manage_devices_req",
+     devices_list : [myDevice]
+     };
+     var xmlhttp = new XMLHttpRequest();
+     var theUrl = "/json-handler";
+     xmlhttp.open("POST", theUrl, true);
+     xmlhttp.onreadystatechange = function() {
+         if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+             alert(xmlhttp.responseText);
+         }
+     };
+     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+     xmlhttp.send(JSON.stringify(json));
+   } */
+  </script>
+</head>
+
+<body>
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="index.html">
+        <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
+      </a>
+
+      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+        data-target="navbarBasicExample">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <div class="buttons">
+            <a class="button is-primary" onclick="authU()">
+              <strong>Авторизироваться</strong>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        Добавить датчик
+      </h1>
+      <form id="deviceForm">
+        <div class="tile is-ancestor">
+          <div class="tile  is-vertical is-parent">
+            <div class="tile is-child box">
+              <p class="title">Активация путем персонализации (ABP)</p>
+              <h2 class="subtitle">Activation by personalization</h2>
+              <div class="field">
+                <label class="label">End-device address (devAddr)</label>
+                <div class="control">
+                  <input class="input" name="devAddress" required type="text" placeholder="Например, 012345AB">
+                </div>
+                <p class="help">Адрес устройства в LoRaWAN сети (32-х разрядное число в шестадцатиричном виде.)</p>
+              </div>
+              <div class="field">
+                <label class="label">Aplication session key (AppSKey)</label>
+                <div class="control">
+                  <input class="input" name="appsKey" required type="text"
+                    placeholder="Например, C9EDC771CF77B0CAF802FCD867EF46D4">
+                </div>
+                <p class="help">Сессионный ключ приложения (строка из 32-х шестадцатиричных символов)</p>
+              </div>
+              <div class="field">
+                <label class="label">Network session key (NwkSKey)</label>
+                <div class="control">
+                  <input class="input" name="nwksKey" type="text"
+                    placeholder="Например, 353E1A29F088F8ACF937D033D5045F0C">
+                </div>
+                <p class="help">Сетевой сессионный ключ (строка из 32-х шестадцатиричных символов)</p>
+              </div>
+            </div>
+            <div class="tile is-child box">
+              <p class="title">Настройки</p>
+              <div class="field">
+                <label class="label">End-device name</label>
+                <div class="control">
+                  <input class="input" name="devName" type="text" placeholder="Например, датчик дыма">
+                </div>
+                <p class="help">Пользовательское наименование устройства.</p>
+              </div>
+              <div class="field">
+                <label class="label">End-device identifier (DevEUI)</label>
+                <div class="control">
+                  <input class="input" name="devEui" type="text" placeholder="Например, 3933363845366606">
+                </div>
+                <p class="help">EUI идентификатор устройства (строка из 16-ти шестадцатиричных символов)</p>
+              </div>
+              <div class="field">
+                <label class="label">End-device class</label>
+                <div class="control">
+                  <div class="select">
+                    <select name="class">
+                      <option value="CLASS_A">Class A (по умолчанию)</option>
+                      <option disabled>Class B (не поддерживается)</option>
+                      <option disabled>Class C (в разработке)</option>
+                    </select>
+                  </div>
+                  <p class="help">Класс устройства (датчика).</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tile is-vertical is-parent">
+            <div class="tile is-child box">
+              <p class="title">Активация «по воздуху» (OTAA)</p>
+              <h2 class="subtitle">Over-the-air activation</h2>
+              <div class="field">
+                <label class="label">Application identifier (AppEUI)</label>
+                <div class="control">
+                  <input class="input" name="appEui" type="text" placeholder="Например, FEDCBA9876543210">
+                </div>
+                <p class="help">EUI идентификатор приложения устройства (строка из 16-ти шестадцатиричных символов)</p>
+              </div>
+              <div class="field">
+                <label class="label">Application key (AppKey)</label>
+                <div class="control">
+                  <input class="input" name="appKey" type="text"
+                    placeholder="Например, A72D920E7E4A61E967635DEC32E78FBB">
+                </div>
+                <p class="help">Ключ приложения устройства (строка из 32-х шестадцатиричных символов)</p>
+              </div>
+            </div>
+            <div class="tile is-child box">
+              <p class="title">Расположение устройства</p>
+              <div class="field">
+                <label class="label">Широта</label>
+                <div class="control">
+                  <input class="input" name="longitude" type="text" placeholder="0">
+                </div>
+              </div>
+              <div class="field">
+                <label class="label">Долгота</label>
+                <div class="control">
+                  <input class="input" name="latitude" type="text" placeholder="0">
+                </div>
+              </div>
+              <div class="field">
+                <label class="label">Высота</label>
+                <div class="control">
+                  <input class="input" name="altitude" type="text" placeholder="0">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h3 class="title is-3">Дополнительные настройки</h3>
+        <div class="tile is-ancestor">
+          <div class="tile  is-vertical is-parent">
+            <div class="tile is-child box">
+              <p class="title">Настройка устройства Класса С </p>
+              <h2 class="subtitle">В разработке</h2>
+              <div class="field">
+                <label class="label">Время реакции устройства класса С (мс)</label>
+                <div class="control">
+                  <input class="input" name="reactionTime" disabled required type="text" placeholder="Например, 1000">
+                </div>
+                <p class="help">Это время между окончанием приема сообщения сервера устройства и началом отправки
+                  возможного ответа от устройства. </p>
+              </div>
+              <div class="field">
+                <div class="control">
+                  <label class="checkbox" disabled>
+                    <input type="checkbox" name="useDownlinkQueueClassC" disabled>
+                    Разрешить помещать пакеты для отправки в очередь.
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="tile is-child box">
+              <p class="title">Настройки ADR</p>
+              <div class="field">
+                <div class="control">
+                  <label class="checkbox">
+                    <input type="checkbox" name="serverAdrEnable">
+                    Разрешить ADR
+                  </label>
+                  <p class="help">Флаг, разрешающий работу алгоритма ADR на сервере для конкретного устройства (если
+                    галочка снята, сервер не будет регулировать скорость передачи устройства)</p>
+                </div>
+              </div>
+              <div class="field">
+                <label class="label">Preferred data rate</label>
+                <div class="control">
+                  <div class="select">
+                    <select name="preferDr">
+                      <option value="0">DR0 (по умолчанию)</option>
+                      <option value="1">DR1</option>
+                      <option value="2">DR2</option>
+                      <option value="3">DR3</option>
+                      <option value="4">DR4</option>
+                      <option value="5">DR5</option>
+                    </select>
+                  </div>
+                  <p class="help">Значение DR (скорости), к которой будет стремиться алгоритм ADR сервера.</p>
+                </div>
+              </div>
+              <div class="field">
+                <label class="label">Preferred transmit power</label>
+                <div class="control">
+                  <div class="select">
+                    <select name="preferPower">
+                      <option value="14">14 dBm (по умолчанию)</option>
+                      <option value="10">10 dBm</option>
+                      <option value="7">7 dBm</option>
+                      <option value="5">5 dBm</option>
+                      <option value="2">2 dBm</option>
+                    </select>
+                  </div>
+                  <p class="help">Мощность передатчика устройства, которую сервер задаст ему при очередном сеансе связи.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="tile is-child box">
+              <p class="title">Настройка приемных окон устройства</p>
+              <div class="field">
+                <label class="label">RX window</label>
+                <div class="control">
+                  <div class="select">
+                    <select name="rxWindow">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                    </select>
+                  </div>
+                  <p class="help">Номер приемного окна, через которое сервер будет передавать данные.</p>
+                </div>
+                <div class="field">
+                  <label class="label">RX1 delay</label>
+                  <div class="control">
+                    <div class="select">
+                      <select name="delayRx1">
+                        <option value="1">1 секунда (по умолчанию)</option>
+                        <option value="2">2 секунды</option>
+                        <option value="3">3 секунды</option>
+                        <option value="4">4 секунды</option>
+                        <option value="5">5 секунд</option>
+                        <option value="6">6 секунд</option>
+                        <option value="7">7 секунд</option>
+                        <option value="8">8 секунд</option>
+                        <option value="9">9 секунд</option>
+                        <option value="10">10 секунд</option>
+                        <option value="11">11 секунд</option>
+                        <option value="12">12 секунд</option>
+                        <option value="13">13 секунд</option>
+                        <option value="14">14 секунд</option>
+                        <option value="15">15 секунд</option>
+                      </select>
+                    </div>
+                    <p class="help">Задержка открытия устройством первого приемного окна, второе окно открывается всегда
+                      (если первое недоступно) через 1 секунду после первого.</p>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">RX2 date rate</label>
+                  <div class="control">
+                    <div class="select">
+                      <select name="drRx2">
+                        <option value="0">DR0 (по умолчанию)</option>
+                        <option value="1">DR1</option>
+                        <option value="2">DR2</option>
+                        <option value="3">DR3</option>
+                        <option value="4">DR4</option>
+                        <option value="5">DR5</option>
+                      </select>
+                    </div>
+                    <p class="help">Скорость передачи данных для 2-го приемного окна.</p>
+                  </div>
+                </div>
+                <div class="field">
+                  <label class="label">Join accept delay 1</label>
+                  <div class="control">
+                    <div class="select">
+                      <select name="delayJoin1">
+                        <option value="1">1 секунда (по умолчанию)</option>
+                        <option value="2">2 секунды</option>
+                        <option value="3">3 секунды</option>
+                        <option value="4">4 секунды</option>
+                        <option value="5">5 секунд</option>
+                        <option value="6">6 секунд</option>
+                        <option value="7">7 секунд</option>
+                        <option value="8">8 секунд</option>
+                        <option value="9">9 секунд</option>
+                        <option value="10">10 секунд</option>
+                        <option value="11">11 секунд</option>
+                        <option value="12">12 секунд</option>
+                        <option value="13">13 секунд</option>
+                        <option value="14">14 секунд</option>
+                        <option value="15">15 секунд</option>
+                      </select>
+                    </div>
+                    <p class="help">Задержка открытия устройством первого приемного окна для получения регистрационной
+                      информации при активации в сети способом OTAA.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tile is-vertical is-child">
+            <div class="tile is-child box">
+              <p class="title">Региональные настройки</p>
+              <div class="field">
+                <label class="label">Частотные планы</label>
+                <div class="control">
+                  <div class="select">
+                    <select name="frequencyPlan">
+                      <option>РФ</option>
+                    </select>
+                  </div>
+                  <p class="help">Частоты российской федерации</p>
+                </div>
+                <div class="field">
+                  <label class="label">RX2 Frequency, Hz</label>
+                  <div class="control">
+                    <input class="input" disabled name="freqRx2" required type="text" placeholder="869525000">
+                  </div>
+                  <p class="help">Частота приема второго окна (869525000 по умолчанию)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="field is-grouped is-grouped-right">
+        <div class="control">
+          <button class="button is-link is-success" onclick="saveDevice()">Добавить</button>
+        </div>
+        <div class="control">
+          <button class="button is-link is-danger">Вернуться назад</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+
+</html>
