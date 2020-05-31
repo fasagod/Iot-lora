@@ -21,17 +21,21 @@ function saveDevice() {
     var myDevice = new device();
     myDevice.devEui = form.elements["devEui"].value;
     myDevice.devName = form.elements["devName"].value;
-    myDevice.ABP =
-    {
-        devAddress: form.elements["devAddress"].value,
-        appsKey: form.elements["appsKey"].value,
-        nwksKey: form.elements["nwksKey"].value
-    };
-    myDevice.OTAA =
-    {
-        appEui: form.elements["appEui"].value,
-        appKey: form.elements["appKey"].value
-    };
+    if (!(form.elements["devAddress"].value === '' && form.elements["appsKey"].value === '' && form.elements["nwksKey"].value === '')) {
+        myDevice.ABP =
+        {
+            devAddress: form.elements["devAddress"].value,
+            appsKey: form.elements["appsKey"].value,
+            nwksKey: form.elements["nwksKey"].value
+        };
+    }
+    if (!(form.elements["appEui"].value === '' && form.elements["appKey"].value === '')) {
+        myDevice.OTAA =
+        {
+            appEui: form.elements["appEui"].value,
+            appKey: form.elements["appKey"].value
+        };
+    }
     myDevice.position =
     {
         longitude: form.elements["longitude"].value,
