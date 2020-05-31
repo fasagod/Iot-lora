@@ -13,7 +13,7 @@ var webSocket = new WebSocket("ws://192.168.100.120:8002");
         webSocket.send(JSON.stringify(auth))
     }
 
-} 
+}  
 
 
 function saveDevice() {
@@ -36,17 +36,24 @@ function saveDevice() {
             appKey: form.elements["appKey"].value
         };
     }
+    else{
+        myDevice.OTAA =
+        {
+            appEui: undefined,
+            appKey: undefined
+        };
+    }
     myDevice.position =
     {
         longitude: form.elements["longitude"].value,
         latitude: form.elements["latitude"].value,
         altitude: form.elements["altitude"].value
     };
-    myDevice.rxWindow = form.elements["rxWindow"].value;
-    myDevice.delayRx1 = form.elements["delayRx1"].value;
-    myDevice.drRx2 = form.elements["drRx2"].value;
-    myDevice.preferDr = form.elements["preferDr"].value;
-    myDevice.preferPower = form.elements["preferPower"].value;
+    myDevice.rxWindow = parseInt(form.elements["rxWindow"].value,2);
+    myDevice.delayRx1 = parseInt(form.elements["delayRx1"].value,2);
+    myDevice.drRx2 = parseInt(form.elements["drRx2"].value,2);
+    myDevice.preferDr = parseInt(form.elements["preferDr"].value,2);
+    myDevice.preferPower = parseInt(form.elements["preferPower"].value,2);
     myDevice.serverAdrEnable = form.elements["serverAdrEnable"].value;
     myDevice.valid_data();
     var jsonMess =
@@ -54,9 +61,11 @@ function saveDevice() {
         cmd: "manage_devices_req",
         devices_list: [myDevice]
     };
-    // console.log(JSON.stringify(jsonMess));
+    console.log(myDevice);
+
+    console.log(JSON.stringify(jsonMess));
     webSocket.send(JSON.stringify(jsonMess));
 }
- webSocket.onmessage = function (event) {
+  webSocket.onmessage = function (event) {
     console.log(event.data);
-} 
+}  
