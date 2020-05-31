@@ -10,53 +10,6 @@
   <link rel="stylesheet" type="text/css" href="css/bulma.css">
   <script src="js/manageDevice.js"></script>
   <script src="js/app.js"></script>
-  <script lang="javaScript">
-    /*  function saveDevice (){
-     var form = document.getElementById("deviceForm");
-     var myDevice = new device();
-         myDevice.devEui = form.elements["devEui"].value;
-         myDevice.devName = form.elements["devName"].value;
-         myDevice.ABP =
-         {
-           devAddess: form.elements["devAddress"].value,
-           appsKey: form.elements["appsKey"].value,
-           nwksKey: form.elements["nwksKey"].value
-         };
-         myDevice.OTAA=
-         {
-           appEui: form.elements["appEui"].value,
-           appKey: form.elements["appKey"].value
-         };
-         myDevice.position=
-         {
-           longitude:form.elements["longitude"].value,
-           latitude:form.elements["latitude"].value,
-           altitude:form.elements["altitude"].value
-         };
-         myDevice.rxWindow= form.elements["rxWindow"].value;
-         myDevice.delayRx1= form.elements["delayRx1"].value;
-         myDevice.drRx2= form.elements["drRx2"].value;
-         myDevice.preferDr= form.elements["preferDr"].value;
-         myDevice.preferPower= form.elements["preferPower"].value;
-         myDevice.serverAdrEnable= form.elements["serverAdrEnable"].value;
-         myDevice.valid_data();
-     var json =
-     {
-     cmd : "manage_devices_req",
-     devices_list : [myDevice]
-     };
-     var xmlhttp = new XMLHttpRequest();
-     var theUrl = "/json-handler";
-     xmlhttp.open("POST", theUrl, true);
-     xmlhttp.onreadystatechange = function() {
-         if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-             alert(xmlhttp.responseText);
-         }
-     };
-     xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-     xmlhttp.send(JSON.stringify(json));
-   } */
-  </script>
 </head>
 
 <body>

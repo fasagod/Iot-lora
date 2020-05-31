@@ -59,7 +59,7 @@ class device
         this.lastRssi;
         this.lastSnr;
         this.totalNum;
-        this.reactionTime=1000;
+        this.reactionTime;
         this.useDownlinkQueueClassC = false;
         this.serverAdrEnable = true;
     }
@@ -87,7 +87,7 @@ class device
                        return false;
                    }
                    else {
-                       if(valid.isBool(this.useDownlinkQueueClassC)&&valid.isBool(this.serverAdrEnable)&&valid.oneortwo(this.rxWindow)&&valid.isNumber(this.reactionTime)&&valid.num1_15(this.delayRx1)&&valid.num1_15(this.delayJoin1)&&valid.num0_5(this.drRx2)&&valid.preferPower(this.preferPower))
+                       if(valid.isBool(this.useDownlinkQueueClassC)&&valid.isBool(this.serverAdrEnable)&&valid.oneortwo(this.rxWindow)&&valid.num1_15(this.delayRx1)&&valid.num1_15(this.delayJoin1)&&valid.num0_5(this.drRx2)&&valid.preferPower(this.preferPower))
                        {
                            
                             return true;
@@ -95,7 +95,7 @@ class device
                        }
                        else
                        {
-                           console.log('Error информации для добовления');
+                           console.log('Error информации для добавления');
                            return false;
                        }
                    }

@@ -23,7 +23,7 @@ function saveDevice() {
     myDevice.devName = form.elements["devName"].value;
     myDevice.ABP =
     {
-        devAddess: form.elements["devAddress"].value,
+        devAddress: form.elements["devAddress"].value,
         appsKey: form.elements["appsKey"].value,
         nwksKey: form.elements["nwksKey"].value
     };
