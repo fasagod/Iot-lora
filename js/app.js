@@ -1,4 +1,4 @@
-webSocket = new WebSocket(url, protocols);
+webSocket = new WebSocket("ws://192.168.100.120:8002");
 function saveDevice() {
     var form = document.getElementById("deviceForm");
     var myDevice = new device();
