@@ -1,4 +1,4 @@
-var webSocket = new WebSocket("ws://192.168.100.120:8002");
+ var webSocket = new WebSocket("ws://192.168.100.120:8002");
 
  function authU() {
     var auth = {
@@ -13,7 +13,7 @@ var webSocket = new WebSocket("ws://192.168.100.120:8002");
         webSocket.send(JSON.stringify(auth))
     }
 
-}  
+}   
 
 
 function saveDevice() {
@@ -29,6 +29,9 @@ function saveDevice() {
             nwksKey: form.elements["nwksKey"].value
         };
     }
+    else{
+        delete myDevice.ABP;
+    }
     if (!(form.elements["appEui"].value === '' && form.elements["appKey"].value === '')) {
         myDevice.OTAA =
         {
@@ -37,11 +40,7 @@ function saveDevice() {
         };
     }
     else{
-        myDevice.OTAA =
-        {
-            appEui: undefined,
-            appKey: undefined
-        };
+        delete myDevice.OTAA;
     }
     myDevice.position =
     {
@@ -55,7 +54,7 @@ function saveDevice() {
     myDevice.preferDr = parseInt(form.elements["preferDr"].value,2);
     myDevice.preferPower = parseInt(form.elements["preferPower"].value,2);
     myDevice.serverAdrEnable = form.elements["serverAdrEnable"].value;
-    myDevice.valid_data();
+    // myDevice.valid_data();
     var jsonMess =
     {
         cmd: "manage_devices_req",
@@ -68,4 +67,4 @@ function saveDevice() {
 }
   webSocket.onmessage = function (event) {
     console.log(event.data);
-}  
+}   
