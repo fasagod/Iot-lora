@@ -14,7 +14,34 @@
     }
 
 }   
-
+var statuses={
+    "inaccessible_command":"Неизвестная комманда",
+    "invalidDevEui":"Некорректный размер EUI индефикатора устройства(DevEui)",
+    "invalidAbpParamList":"Некорректные параметры ABP",
+    "invalidDevAddrValue":"Неизвестная комманда",
+    "invalidSessionKeyValue":"Неизвестная комманда",
+    "invalidOtaaParamList":"Неизвестная комманда",
+    "frequencyPlanIsAbsant":"Неизвестная комманда",
+    "invalidFrequencyPlan":"Неизвестная комманда",
+    "invalidAppKeyValue":"Неизвестная комманда",
+    "invalidChannelMaskParamList":"Неизвестная комманда",
+    "invalidClass":"Неизвестная комманда",
+    "unsupportClass":"Неизвестная комманда",
+    "invalidRxWindow":"Неизвестная комманда",
+    "invalidDataRate":"Неизвестная комманда",
+    "invalidPower":"Неизвестная комманда",
+    "invalidDelay":"Неизвестная комманда",
+    "noRegisterKeys":"Неизвестная комманда",
+    "repetitionDevAddr":"Неизвестная комманда",
+    "abpReginfoAlreadyExist":"Неизвестная комманда",
+    "otaaReginfoAlreadyExist":"Неизвестная комманда",
+    "reginfoAlreadyExist":"Неизвестная комманда",
+    "maxDevCountReached":"Неизвестная комманда",
+    "added":"Устройство добавлено",
+    "updated":"Неизвестная комманда",
+    "nothingToUpdate":"Неизвестная комманда",
+    "updateViaMacBuffer":"Неизвестная комманда"
+}
 
 function saveDevice() {
     var form = document.getElementById("deviceForm");
@@ -63,8 +90,35 @@ function saveDevice() {
     console.log(myDevice);
 
     console.log(JSON.stringify(jsonMess));
+    
     webSocket.send(JSON.stringify(jsonMess));
 }
   webSocket.onmessage = function (event) {
+    var note = document.getElementById("noty");
+    var errorText="";
+    var status=false;
+    var data = JSON.parse(event.data);
+    if (data.status) {
+        if (data.device_add_status && data.device_add_status.lenght>0) {
+            for (let index = 0; index < array.length; index++) {
+                const element = data.device_add_status[index];
+                if (element.status=="added"||element.status=="updated") {
+                    status=true;
+                }
+                errorText=statuses[element.status];
+            }
+        }
+        else {
+            errorText = statuses.inaccessible_command;
+        }
+    }
+    else{
+        errorText = statuses[data.err_string];
+    }
+    note.style.display="block";
+    note.querySelector(".message-header p").innerText = status ? "Успешная операция" : "Неуспешная операция";
+    note.querySelector(".message-body").innerText = errorText;
+    note.className = status ? "message is-success" : "message is-danger";
+
     console.log(event.data);
-}   
+} 
