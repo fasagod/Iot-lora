@@ -1,6 +1,6 @@
- var webSocket = new WebSocket("ws://192.168.100.120:8002");
+var webSocket = new WebSocket("ws://192.168.100.120:8002");
 
- function authU() {
+function authU() {
     var auth = {
         login: 'root',
         password: '123',
@@ -13,34 +13,34 @@
         webSocket.send(JSON.stringify(auth))
     }
 
-}   
-var statuses={
-    "inaccessible_command":"Неизвестная комманда",
-    "invalidDevEui":"Некорректный размер EUI индефикатора устройства(DevEui)",
-    "invalidAbpParamList":"Некорректные параметры ABP",
-    "invalidDevAddrValue":"Неизвестная комманда",
-    "invalidSessionKeyValue":"Неизвестная комманда",
-    "invalidOtaaParamList":"Неизвестная комманда",
-    "frequencyPlanIsAbsant":"Неизвестная комманда",
-    "invalidFrequencyPlan":"Неизвестная комманда",
-    "invalidAppKeyValue":"Неизвестная комманда",
-    "invalidChannelMaskParamList":"Неизвестная комманда",
-    "invalidClass":"Неизвестная комманда",
-    "unsupportClass":"Неизвестная комманда",
-    "invalidRxWindow":"Неизвестная комманда",
-    "invalidDataRate":"Неизвестная комманда",
-    "invalidPower":"Неизвестная комманда",
-    "invalidDelay":"Неизвестная комманда",
-    "noRegisterKeys":"Неизвестная комманда",
-    "repetitionDevAddr":"Неизвестная комманда",
-    "abpReginfoAlreadyExist":"Неизвестная комманда",
-    "otaaReginfoAlreadyExist":"Неизвестная комманда",
-    "reginfoAlreadyExist":"Неизвестная комманда",
-    "maxDevCountReached":"Неизвестная комманда",
-    "added":"Устройство добавлено",
-    "updated":"Неизвестная комманда",
-    "nothingToUpdate":"Неизвестная комманда",
-    "updateViaMacBuffer":"Неизвестная комманда"
+}
+var statuses = {
+    "inaccessible_command": "Неизвестная комманда",
+    "invalidDevEui": "Некорректный размер EUI индефикатора устройства(DevEui)",
+    "invalidAbpParamList": "Некорректные параметры ABP",
+    "invalidDevAddrValue": "Некорректный адрес устройства в сети",
+    "invalidSessionKeyValue": "Некорректный сессионый ключ устройства",
+    "invalidOtaaParamList": "Некорректные параметры OTAA",
+    "frequencyPlanIsAbsant": "Частоты не указываются при OTTA подключении",
+    "invalidFrequencyPlan": "Невозможные параметры частот",
+    "invalidAppKeyValue": "Некорректная длинная параметра",
+    "invalidChannelMaskParamList": "Некорректные параметры каналов",
+    "invalidClass": "Некорректный класс",
+    "unsupportClass": "Неподдерживаемый класс",
+    "invalidRxWindow": "Некорректное окно",
+    "invalidDataRate": "Некорректное значение скорости(Preferred data rate) и/или скорости приема второго окна(RX2 date rate)",
+    "invalidPower": "Некорректное значение мощности",
+    "invalidDelay": "Некорректное значение задержки открытия окна",
+    "noRegisterKeys": "Устройство не существует, либо запрос не содержит регистрационной информации",
+    "repetitionDevAddr": "Устройство с данныи адресом в сети уже существует",
+    "abpReginfoAlreadyExist": "Регистрационные данные ABP уже зарегистрированы в сети",
+    "otaaReginfoAlreadyExist": "Регистрационные данные OTAA уже зарегистрированы в сети",
+    "reginfoAlreadyExist": "Регистрационная информация для соответствующего устройства уже существует на сервере",
+    "maxDevCountReached": "Достигнуто максимальное количество устройств в сети",
+    "added": "Устройство успешно добавлено",
+    "updated": "Настройки устройства успешно обновлены",
+    "nothingToUpdate": "Изменений для существующих параметров устройства не обнаружено",
+    "updateViaMacBuffer": "Полученные параметры должны быть обновлены с помощью команд MAC, и они не могут быть применены сейчас."
 }
 
 function saveDevice() {
@@ -56,7 +56,7 @@ function saveDevice() {
             nwksKey: form.elements["nwksKey"].value
         };
     }
-    else{
+    else {
         delete myDevice.ABP;
     }
     if (!(form.elements["appEui"].value === '' && form.elements["appKey"].value === '')) {
@@ -66,7 +66,7 @@ function saveDevice() {
             appKey: form.elements["appKey"].value
         };
     }
-    else{
+    else {
         delete myDevice.OTAA;
     }
     myDevice.position =
@@ -75,10 +75,10 @@ function saveDevice() {
         latitude: form.elements["latitude"].value,
         altitude: form.elements["altitude"].value
     };
-    myDevice.rxWindow = parseInt(form.elements["rxWindow"].value,2);
-    myDevice.delayRx1 = parseInt(form.elements["delayRx1"].value,2);
-    myDevice.drRx2 = parseInt(form.elements["drRx2"].value,2);
-    myDevice.preferDr = parseInt(form.elements["preferDr"].value,2);
+    myDevice.rxWindow = parseInt(form.elements["rxWindow"].value, 2);
+    myDevice.delayRx1 = parseInt(form.elements["delayRx1"].value, 2);
+    myDevice.drRx2 = parseInt(form.elements["drRx2"].value, 2);
+    myDevice.preferDr = parseInt(form.elements["preferDr"].value, 2);
     myDevice.preferPower = parseFloat(form.elements["preferPower"].value);
     myDevice.serverAdrEnable = form.elements["serverAdrEnable"].value;
     // myDevice.valid_data();
@@ -90,35 +90,36 @@ function saveDevice() {
     console.log(myDevice);
 
     console.log(JSON.stringify(jsonMess));
-    
+
     webSocket.send(JSON.stringify(jsonMess));
 }
-  webSocket.onmessage = function (event) {
-    var note = document.getElementById("noty");
-    var errorText="";
-    var status=false;
+webSocket.onmessage = function (event) {
     var data = JSON.parse(event.data);
-    if (data.status) {
-        if (data.device_add_status && data.device_add_status.lenght>0) {
-            for (let index = 0; index < array.length; index++) {
-                const element = data.device_add_status[index];
-                if (element.status=="added"||element.status=="updated") {
-                    status=true;
+    if (data.cmd == "manage_devices_resp") {
+        var note = document.getElementById("noty");
+        var errorText = "";
+        var status = false;
+        if (data.status) {
+            if (data.device_add_status && data.device_add_status.length > 0) {
+                for (let index = 0; index < data.device_add_status.length; index++) {
+                    const element = data.device_add_status[index];
+                    if (element.status == "added" || element.status == "updated") {
+                        status = true;
+                    }
+                    errorText = statuses[element.status];
                 }
-                errorText=statuses[element.status];
+            }
+            else {
+                errorText = statuses.inaccessible_command;
             }
         }
         else {
-            errorText = statuses.inaccessible_command;
+            errorText = statuses[data.err_string];
         }
+        note.style.display = "block";
+        note.querySelector(".message-header p").innerText = status ? "Успешная операция" : "Неуспешная операция";
+        note.querySelector(".message-body").innerText = errorText;
+        note.className = status ? "message is-success" : "message is-danger";
     }
-    else{
-        errorText = statuses[data.err_string];
-    }
-    note.style.display="block";
-    note.querySelector(".message-header p").innerText = status ? "Успешная операция" : "Неуспешная операция";
-    note.querySelector(".message-body").innerText = errorText;
-    note.className = status ? "message is-success" : "message is-danger";
-
     console.log(event.data);
 } 
