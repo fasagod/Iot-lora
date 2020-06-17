@@ -40,7 +40,21 @@ var statuses = {
     "added": "Устройство успешно добавлено",
     "updated": "Настройки устройства успешно обновлены",
     "nothingToUpdate": "Изменений для существующих параметров устройства не обнаружено",
-    "updateViaMacBuffer": "Полученные параметры должны быть обновлены с помощью команд MAC, и они не могут быть применены сейчас."
+    "updateViaMacBuffer": "Полученные параметры должны быть обновлены с помощью команд MAC, и они не могут быть применены сейчас.",
+    "deleted": "Устройство удалено из сети",
+    "notFound": "Устройство не найдено"
+}
+
+function deleteDevice(){
+    var form = document.getElementById("deviceForm");
+    var myDev = new device();
+    myDev.devEui = form.elements["devEui"].value;
+    var jsonDelMess =
+    {
+        cmd: "delete_devices_req",
+        devices_list: [myDev]
+    };
+    webSocket.send(JSON.stringify(jsonDelMess));
 }
 
 function saveDevice() {
@@ -81,21 +95,19 @@ function saveDevice() {
     myDevice.preferDr = parseInt(form.elements["preferDr"].value, 2);
     myDevice.preferPower = parseFloat(form.elements["preferPower"].value);
     myDevice.serverAdrEnable = form.elements["serverAdrEnable"].value;
-    // myDevice.valid_data();
+    
     var jsonMess =
     {
         cmd: "manage_devices_req",
         devices_list: [myDevice]
     };
-    console.log(myDevice);
-
-    console.log(JSON.stringify(jsonMess));
+    
 
     webSocket.send(JSON.stringify(jsonMess));
 }
 webSocket.onmessage = function (event) {
     var data = JSON.parse(event.data);
-    if (data.cmd == "manage_devices_resp") {
+    if (data.cmd == "manage_devices_resp" || data.cmd == "delete_devices_resp") {
         var note = document.getElementById("noty");
         var errorText = "";
         var status = false;
@@ -103,7 +115,7 @@ webSocket.onmessage = function (event) {
             if (data.device_add_status && data.device_add_status.length > 0) {
                 for (let index = 0; index < data.device_add_status.length; index++) {
                     const element = data.device_add_status[index];
-                    if (element.status == "added" || element.status == "updated") {
+                    if (element.status == "added" || element.status == "updated"|| element.status == "deleted") {
                         status = true;
                     }
                     errorText = statuses[element.status];
@@ -121,5 +133,5 @@ webSocket.onmessage = function (event) {
         note.querySelector(".message-body").innerText = errorText;
         note.className = status ? "message is-success" : "message is-danger";
     }
-    console.log(event.data);
+    
 } 
