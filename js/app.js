@@ -52,7 +52,7 @@ function deleteDevice(){
     var jsonDelMess =
     {
         cmd: "delete_devices_req",
-        devices_list: [myDev]
+        devices_list: [form.elements["devEui"].value]
     };
     webSocket.send(JSON.stringify(jsonDelMess));
 }
@@ -115,7 +115,16 @@ webSocket.onmessage = function (event) {
             if (data.device_add_status && data.device_add_status.length > 0) {
                 for (let index = 0; index < data.device_add_status.length; index++) {
                     const element = data.device_add_status[index];
-                    if (element.status == "added" || element.status == "updated"|| element.status == "deleted") {
+                    if (element.status == "added" || element.status == "updated") {
+                        status = true;
+                    }
+                    errorText = statuses[element.status];
+                }
+            }
+            if (data.device_delete_status && data.device_delete_status.length > 0) {
+                for (let index = 0; index < data.device_delete_status.length; index++) {
+                    const element = data.device_delete_status[index];
+                    if (element.status == "deleted") {
                         status = true;
                     }
                     errorText = statuses[element.status];
